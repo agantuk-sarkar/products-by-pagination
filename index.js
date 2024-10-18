@@ -5,11 +5,11 @@ const baseUrl = "https://dummyjson.com/products";
 const prev = document.querySelector(".prev");
 const next  = document.querySelector(".next");
 
-// varialbles for pageNo and total pages
+// taking variables for pageNo and total pages
 let pageNo = 1;
 let totalPages = null;
 
-// fetching the base url to get all products and using default parameter as limit
+// fetching the base url to get all products and using limit as a default parameter
 const getProducts = async (pageNo,limit=10)=>{
     try{
         const skip = (pageNo-1)*limit;
@@ -17,11 +17,13 @@ const getProducts = async (pageNo,limit=10)=>{
 
         if(response.ok){
             const data = await response.json();
-            // rounding off to the nearest integer of totalPages
+
+            // rounding off totalPages value to the nearest integer            
             totalPages = Math.ceil(data.total/limit);
+
             console.log("data:",data);
         } else{
-            throw new Error("Invalid Url");
+            throw new Error("400 Bad Request");
         }
     } catch(error){
         console.log("error:",error);
