@@ -10,7 +10,7 @@
 }
 .products-container{
     border:1px solid blue;
-    height:70vh;
+    height:80vh;
     width:100%;
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -21,7 +21,7 @@
 .button-container{
     border:1px solid green;
     margin-top:1rem;
-    height: 20vh;
+    height: 15vh;
     width:100%;
     display:flex;
     justify-content: center;
@@ -59,4 +59,16 @@
     border:1px solid blue;
     height:30%;
     padding:1%;
+}
+.individual-buttons{
+    border:1px solid red;
+    height:2.2rem;
+    width:30%;
+    align-items: center;
+    overflow:auto;
+}
+.individual-buttons>button{
+    width:7%;
+    gap:5px;
+    cursor:pointer;
 }

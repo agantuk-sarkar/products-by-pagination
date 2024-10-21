@@ -3,6 +3,7 @@ const baseUrl = "https://dummyjson.com/products";
 
 // getting the html elements into js
 const products_container = document.querySelector(".products-container");
+const individual_buttons = document.querySelector(".individual-buttons");
 const prev = document.querySelector(".prev");
 const next  = document.querySelector(".next");
 
@@ -24,6 +25,7 @@ const getProducts = async (pageNo,limit=10)=>{
 
             console.log("data:",data);
             displayProducts(data.products);
+            showIndividualButtons();
         } else{
             throw new Error("400 Bad Request");
         }
@@ -89,4 +91,30 @@ const displayProducts = (products)=>{
         products_container.append(productMainDiv);
 
     });
+}
+
+// function to show individual buttons for individual pages
+const showIndividualButtons = ()=>{
+
+    individual_buttons.innerHTML = "";
+
+    // applying for loop to get the no of button from total pages
+    for(let i = 1; i <= totalPages; i++){
+
+        const buttons = document.createElement("button");
+        buttons.textContent = i;
+
+     // click event for buttons
+        buttons.addEventListener("click",()=>{
+
+            // re-assigning the pageNo with the selected button
+            pageNo = i;
+
+            // calling the getPorducts function to send the sel;ected pageNo
+            getProducts(pageNo);
+        });
+
+        individual_buttons.append(buttons);
+    }
+
 }
