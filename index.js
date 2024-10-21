@@ -2,6 +2,7 @@
 const baseUrl = "https://dummyjson.com/products";
 
 // getting the html elements into js
+const products_container = document.querySelector(".products-container");
 const prev = document.querySelector(".prev");
 const next  = document.querySelector(".next");
 
@@ -22,6 +23,7 @@ const getProducts = async (pageNo,limit=10)=>{
             totalPages = Math.ceil(data.total/limit);
 
             console.log("data:",data);
+            displayProducts(data.products);
         } else{
             throw new Error("400 Bad Request");
         }
@@ -53,3 +55,38 @@ next.addEventListener("click",()=>{
         next.disabled = "true";
     }
 });
+
+// function to display products in UI
+const displayProducts = (products)=>{
+
+    products_container.innerHTML = "";
+
+    products?.forEach((product)=>{
+        const productMainDiv = document.createElement("div");
+        productMainDiv.classList.add("product-mainDiv");
+
+        const imageDiv = document.createElement("div");
+        imageDiv.classList.add("imageDiv");
+
+        const imageTag = document.createElement("img");
+        imageTag.classList.add("imageTag");
+        imageTag.src = product.thumbnail;
+
+        const textDiv = document.createElement("div");
+        textDiv.classList.add("textDiv");
+
+        const price = document.createElement("h3");
+        price.textContent = product.price;
+
+        const title = document.createElement("p");
+        title.textContent = product.title;
+
+        imageDiv.append(imageTag);
+        textDiv.append(price,title);
+
+        productMainDiv.append(imageDiv,textDiv);
+
+        products_container.append(productMainDiv);
+
+    });
+}
