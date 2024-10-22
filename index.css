@@ -64,11 +64,13 @@
     border:1px solid red;
     height:2.2rem;
     width:30%;
+    display:flex;
     align-items: center;
     overflow:auto;
+    gap:5px;
 }
 .individual-buttons>button{
-    width:7%;
+    width:12%;
     gap:5px;
     cursor:pointer;
 }
