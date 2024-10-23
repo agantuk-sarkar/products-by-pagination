@@ -63,14 +63,21 @@
 .individual-buttons{
     border:1px solid red;
     height:2.2rem;
-    width:30%;
+    width:24%;
     display:flex;
     align-items: center;
-    overflow:auto;
+    /* overflow:auto; */
     gap:5px;
 }
 .individual-buttons>button{
-    width:12%;
+    height:2.2rem;
+    width:25%;
     gap:5px;
     cursor:pointer;
+    /* background-color:white; */
+    border:1px solid black;
+}
+.change-color{
+    background-color:blue;
+    color:white;
 }

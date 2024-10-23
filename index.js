@@ -98,11 +98,35 @@ const showIndividualButtons = ()=>{
 
     individual_buttons.innerHTML = "";
 
-    // applying for loop to get the no of button from total pages
-    for(let i = 1; i <= totalPages; i++){
+    // taking startPage and endPage to show only 5 buttons at once
+    let startPage = null;
+    let endPage = null;
+
+    // checking the pages if valid then it will show only 5 buttons and it won't exceed totalPages
+    if(pageNo < 3){
+        startPage = 1;
+        endPage = 5;
+    } else if(pageNo + 2 >= totalPages){
+        startPage = totalPages - 4;
+        endPage = totalPages;
+    } else {
+        startPage = pageNo - 2;
+        endPage = pageNo + 2;
+    }
+    console.log("startPage:",startPage);
+    console.log("endPage:",endPage);
+
+
+    // applying for loop to get the no of button between startPage and endPage
+    for(let i = startPage; i <= endPage; i++){
 
         const buttons = document.createElement("button");
         buttons.textContent = i;
+
+        // showing the selected button in background color
+        if(i === pageNo){
+            buttons.classList.add("change-color");
+        }
 
      // click event for buttons
         buttons.addEventListener("click",()=>{
@@ -110,7 +134,7 @@ const showIndividualButtons = ()=>{
             // re-assigning the pageNo with the selected button
             pageNo = i;
 
-            // calling the getPorducts function to send the sel;ected pageNo
+            // calling the getPorducts function to send the selected pageNo
             getProducts(pageNo);
         });
 
