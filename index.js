@@ -122,6 +122,7 @@ const showIndividualButtons = ()=>{
 
         const buttons = document.createElement("button");
         buttons.textContent = i;
+        buttons.classList.add("pageButtons");
 
         // showing the selected button in background color
         if(i === pageNo){
@@ -139,6 +140,37 @@ const showIndividualButtons = ()=>{
         });
 
         individual_buttons.append(buttons);
+    }
+
+    // showing the max and min pages
+    if(pageNo > 3){
+        const spanTagForDots = document.createElement("span");
+        spanTagForDots.textContent = "...";
+        spanTagForDots.classList.add("dots");
+        individual_buttons.appendChild(spanTagForDots);
+
+        const extraButton = document.createElement("button");
+        extraButton.textContent = totalPages;
+        extraButton.classList.add("pageButtons");
+
+        // if the last page is clicked then it should show the last page products
+        extraButton.addEventListener("click",()=>{
+            pageNo = totalPages;
+            getProducts(pageNo);
+        });
+
+        individual_buttons.appendChild(extraButton);
+
+
+        // if the totalPages and the last pageNo matches then remove the last button text and also the dots which is in span tag
+
+        if(pageNo === totalPages){
+            individual_buttons.removeChild(extraButton);
+            individual_buttons.removeChild(spanTagForDots);
+
+        }
+        // individual_buttons.appendChild(extraButton);
+
     }
 
 }

@@ -69,15 +69,19 @@
     /* overflow:auto; */
     gap:5px;
 }
-.individual-buttons>button{
+.pageButtons{
     height:2.2rem;
     width:25%;
     gap:5px;
     cursor:pointer;
-    /* background-color:white; */
+    background-color:white;
     border:1px solid black;
 }
 .change-color{
     background-color:blue;
     color:white;
+}
+.dots{
+    font-size:40px;
+    margin-top:-20px;
 }
