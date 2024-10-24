@@ -142,12 +142,12 @@ const showIndividualButtons = ()=>{
         individual_buttons.append(buttons);
     }
 
-    // showing the max and min pages
+    // showing the max pages
     if(pageNo > 3){
         const spanTagForDots = document.createElement("span");
         spanTagForDots.textContent = "...";
         spanTagForDots.classList.add("dots");
-        individual_buttons.appendChild(spanTagForDots);
+        // individual_buttons.appendChild(spanTagForDots);
 
         const extraButton = document.createElement("button");
         extraButton.textContent = totalPages;
@@ -159,7 +159,7 @@ const showIndividualButtons = ()=>{
             getProducts(pageNo);
         });
 
-        individual_buttons.appendChild(extraButton);
+        individual_buttons.append(spanTagForDots,extraButton);
 
 
         // if the totalPages and the last pageNo matches then remove the last button text and also the dots which is in span tag
