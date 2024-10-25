@@ -96,6 +96,7 @@ const displayProducts = (products)=>{
 // function to show individual buttons for individual pages
 const showIndividualButtons = ()=>{
 
+    // this will clear the button container everytime the function is called
     individual_buttons.innerHTML = "";
 
     // taking startPage and endPage to show only 5 buttons at once
@@ -116,6 +117,28 @@ const showIndividualButtons = ()=>{
     console.log("startPage:",startPage);
     console.log("endPage:",endPage);
 
+    // showing minimum pages before the loop executes
+    if(pageNo < 3){
+        const span = document.createElement("span");
+        span.textContent = "...";
+        span.classList.add("dots");
+
+        const firstButton = document.createElement("button");
+        firstButton.textContent = "1";
+        firstButton.classList.add("pageButtons");
+
+        firstButton.addEventListener("click",()=>{
+            pageNo = 1;
+            getProducts(pageNo);
+        });
+
+        individual_buttons.append(firstButton,span);
+
+        if(pageNo === 1){
+            individual_buttons.removeChild(firstButton);
+            individual_buttons.removeChild(span);
+        }
+    }
 
     // applying for loop to get the no of button between startPage and endPage
     for(let i = startPage; i <= endPage; i++){
@@ -142,7 +165,7 @@ const showIndividualButtons = ()=>{
         individual_buttons.append(buttons);
     }
 
-    // showing the max pages
+    // showing the maximum pages after the loop executes
     if(pageNo > 3){
         const spanTagForDots = document.createElement("span");
         spanTagForDots.textContent = "...";
