@@ -14,9 +14,11 @@
     width:100%;
     display:grid;
     grid-template-columns:repeat(3,1fr);
+    /* grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); */
     overflow:auto;
     gap:10px;
     padding:1.5%;
+    justify-items: stretch;
 }
 .button-container{
     border:1px solid green;
@@ -42,8 +44,11 @@
 
 .product-mainDiv{
     border:2px solid black;
-    height:60vh;
-    width:70%;
+    /* min-height:60vh; */
+    /* height:fit-content; */
+    /* width: */
+    /* height:auto; */
+    /* width:90%; */
     display:flex;
     flex-direction:column;
     /* gap:20px; */
@@ -91,4 +96,34 @@
 .dots{
     font-size:40px;
     margin-top:-20px;
+}
+.description{
+    border:1px solid red;
+    overflow: hidden;
+    height:3rem;
+    line-height:1.3rem;
+   /* text-overflow: ellipsis; */
+   /* display: -webkit-box; */
+   -webkit-line-clamp: 2;
+           line-clamp: 2;
+   -webkit-box-orient: vertical;
+}
+.read-more-button{
+    border:none;
+    color:blue;
+    background-color: white;
+    text-decoration: underline;
+}
+.when-clicked-readMore-button{
+    height:auto;
+}
+.show-less-text{
+    border:none;
+    background-color: white;
+    color:blue;
+    text-decoration: underline;
+}
+.when-clicked-showLess-button{
+    /* overflow:hidden; */
+    height:3rem;
 }
