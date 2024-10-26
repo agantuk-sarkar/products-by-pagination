@@ -5,20 +5,21 @@
 }
 .main-container{
     border:1px solid red;
-    height:100vh;
+    min-height:100vh;
     width:100%;
 }
 .products-container{
     border:1px solid blue;
-    height:80vh;
+    /* height:80vh; */
     width:100%;
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(4,1fr);
     /* grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); */
-    overflow:auto;
+    /* overflow:auto; */
     gap:10px;
-    padding:1.5%;
+    padding:1.5rem;
     justify-items: stretch;
+    align-items: stretch;
 }
 .button-container{
     border:1px solid green;
@@ -54,11 +55,12 @@
     /* gap:20px; */
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     border-radius:8px;
+    /* padding:2rem; */
 }
 
 .imageDiv{
-    border:1px solid green;
-    height:70%;
+    border:2px solid green;
+    height:60%;
 }
 .imageTag{
     height:100%;
@@ -66,8 +68,9 @@
 }
 .textDiv{
     border:1px solid blue;
-    height:30%;
-    padding:1%;
+    height:40%;
+    padding:0.5rem;
+    /* margin:0 0 1rem 0; */
 }
 .individual-buttons{
     border:1px solid red;
