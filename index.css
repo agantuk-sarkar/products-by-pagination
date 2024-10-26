@@ -67,7 +67,7 @@
 .individual-buttons{
     border:1px solid red;
     height:2rem;
-    width:22%;
+    width:fit-content;
     display:flex;
     align-items: center;
     /* overflow:auto; */
@@ -75,7 +75,8 @@
 }
 .pageButtons{
     height:2rem;
-    width:22%;
+    /* width:22%; */
+    padding:0.5rem 1rem;
     gap:5px;
     cursor:pointer;
     background-color:white;

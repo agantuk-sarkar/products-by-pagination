@@ -118,7 +118,7 @@ const showIndividualButtons = ()=>{
     console.log("endPage:",endPage);
 
     // showing minimum pages before the loop executes
-    if(pageNo < 3){
+    if(pageNo > 3){
         const span = document.createElement("span");
         span.textContent = "...";
         span.classList.add("dots");
