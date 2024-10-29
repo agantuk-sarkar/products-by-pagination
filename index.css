@@ -7,6 +7,12 @@
     border:1px solid red;
     min-height:100vh;
     width:100%;
+    position:relative;
+}
+.nav-bar{
+    border: 1px solid blue;
+    height:4rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 .products-container{
     border:1px solid blue;
