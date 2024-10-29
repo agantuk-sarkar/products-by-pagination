@@ -85,6 +85,35 @@ const displayProducts = (products) => {
     const title = document.createElement("p");
     title.textContent = product.title;
 
+    const ratingContainer = document.createElement("div");
+    ratingContainer.classList.add("rating-container");
+    // ratingDiv.textContent = product.rating; 3.27
+
+    let fullStar = Math.floor(product.rating);
+    let decimalStar = +((product.rating - fullStar).toString().slice(0,4));
+
+    // console.log(decimalStar);
+    // console.log(typeof decimalStar);
+
+    // using for loop to create 5 stars for rating
+    for (let i = 1; i <= 5; i++) {
+      const stars = document.createElement("span");
+      stars.innerHTML = "&#9733";
+      stars.classList.add("individual-star");
+
+      if(i <= fullStar){
+        stars.classList.add("full-stars");
+      } else if(i === fullStar+1){
+        stars.classList.add("decimal-star");
+      }
+
+      // if(i > decimalStar && i < fullStar){
+      //   stars.classList.add("decimal-star");
+      // }
+
+      ratingContainer.append(stars);
+    }
+  
     const description = document.createElement("p");
     description.textContent = product.description;
     description.classList.add("description");
@@ -126,11 +155,10 @@ const displayProducts = (products) => {
       description.classList.remove("when-clicked-showLess-button");
 
       showLess(temp);
-
     });
 
     imageDiv.append(imageTag);
-    textDiv.append(price, title, description, readMoreButton);
+    textDiv.append(price, title, ratingContainer, description, readMoreButton);
 
     productMainDiv.append(imageDiv, textDiv);
 

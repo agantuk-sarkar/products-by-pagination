@@ -130,3 +130,22 @@
     /* overflow:hidden; */
     height:3rem;
 }
+.rating-container{
+    border:1px solid green;
+    height:2rem;
+    display:flex;
+    align-items: center;
+}
+.individual-star{
+    /* height:1rem; */
+    font-size:1.4rem;
+    display:flex;
+    align-items: center;
+    color:lightgray;
+}
+.full-stars {
+    color: gold;
+}
+.decimal-star{
+    color:gold;
+}
