@@ -103,10 +103,7 @@ const displayProducts = (products) => {
 
       if(i <= fullStar){
         stars.classList.add("full-stars");
-      } else if(i === fullStar+1){
-        stars.classList.add("decimal-star");
-      }
-
+      } 
       // if(i > decimalStar && i < fullStar){
       //   stars.classList.add("decimal-star");
       // }
