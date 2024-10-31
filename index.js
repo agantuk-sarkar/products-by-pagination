@@ -80,7 +80,7 @@ const displayProducts = (products) => {
     textDiv.classList.add("textDiv");
 
     const price = document.createElement("h3");
-    price.textContent = product.price;
+    price.textContent = `Rs ${product.price}`;
 
     const title = document.createElement("p");
     title.textContent = product.title;
@@ -89,6 +89,7 @@ const displayProducts = (products) => {
     ratingContainer.classList.add("rating-container");
     // ratingDiv.textContent = product.rating; 3.27
 
+    // taking variables for full star and decimal star rating
     let fullStar = Math.floor(product.rating);
     let decimalStar = +((product.rating - fullStar).toString().slice(0,4));
 
