@@ -104,11 +104,14 @@ const displayProducts = (products) => {
 
       if(i <= fullStar){
         stars.classList.add("full-stars");
-      } 
-      // if(i > decimalStar && i < fullStar){
-      //   stars.classList.add("decimal-star");
-      // }
+      } else if(i === fullStar + 1 && decimalStar > 0){
+        stars.classList.add("decimal-star");
 
+        let decimalPercentage = decimalStar * 100;
+
+        stars.style.setProperty("--fill-percent",`${decimalPercentage}%`);
+      } 
+  
       ratingContainer.append(stars);
     }
   

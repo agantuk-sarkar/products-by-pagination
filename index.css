@@ -161,9 +161,12 @@ nav{
 .full-stars {
     color: gold;
 }
-/* .decimal-star{
+.decimal-star{
     color:gold;
-} */
+    background: linear-gradient(90deg,gold var(--fill-percent),lightgray var(--fill-percent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 .search-container{
     border:1px solid green;
     height:100%;
