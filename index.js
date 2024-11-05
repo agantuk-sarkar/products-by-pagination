@@ -1,9 +1,14 @@
 // base url for showing all products
 const baseUrl = "https://dummyjson.com/products";
 
+// search url
+// https://dummyjson.com/products/search?q=phone&limit=10&skip=20
+
+
 // getting the html elements into js
 const products_container = document.querySelector(".products-container");
 const individual_buttons = document.querySelector(".individual-buttons");
+const search_input = document.getElementById("search");
 const prev = document.querySelector(".prev");
 const next = document.querySelector(".next");
 
@@ -14,11 +19,54 @@ let totalPages = null;
 // taking temporary variable to change the status from readMore to show less
 let temp = false;
 
+// timeout ID
+let timeOutId = null;
+
+// event for search input with debouncing
+search_input.addEventListener("input",()=>{
+
+  let searchValue = search_input.value;
+    // console.log("searchValue:",searchValue);
+
+  debounce(getProducts,2000,searchValue);
+
+});
+
+// function for debouncing
+const debounce = (functionToCall,timer,searchValue)=>{
+
+  if(timeOutId){
+    clearTimeout(timeOutId);
+  }
+
+  timeOutId = setTimeout(()=>{
+    console.log("pageNo:",pageNo);
+    console.log("searchValue:",searchValue);
+    
+    functionToCall(pageNo,10,searchValue);
+  },timer);
+
+}
+
 // fetching the base url to get all products and using limit as a default parameter
-const getProducts = async (pageNo, limit = 10) => {
+const getProducts = async (pageNo = 1, limit = 10,searchValue) => {
   try {
+
+    let url = null;
     const skip = (pageNo - 1) * limit;
-    const response = await fetch(`${baseUrl}?limit=${limit}&skip=${skip}`);
+
+    if(searchValue){
+      // console.log("searchValue:",searchValue);
+      url = `${baseUrl}/search?q=${searchValue}&limit=${limit}&skip=${skip}`;
+    } else {
+      url = `${baseUrl}?limit=${limit}&skip=${skip}`;
+    }
+
+    const response = await fetch(`${url}`);
+
+    // if(search_input.value){
+    //   const responseSearch = await fetch(`${searchUrl}?limit=${limit}&skip=${skip}`)
+    // }
 
     if (response.ok) {
       const data = await response.json();
@@ -28,7 +76,7 @@ const getProducts = async (pageNo, limit = 10) => {
 
       console.log("data:", data);
       displayProducts(data.products);
-      showIndividualButtons();
+      showIndividualButtons(totalPages);
     } else {
       throw new Error("400 Bad Request");
     }
@@ -168,7 +216,8 @@ const displayProducts = (products) => {
 };
 
 // function to show individual buttons for individual pages
-const showIndividualButtons = () => {
+const showIndividualButtons = (totalPages) => {
+  console.log("totalPages:",totalPages);
   // this will clear the button container everytime the function is called
   individual_buttons.innerHTML = "";
 
@@ -187,8 +236,8 @@ const showIndividualButtons = () => {
     startPage = pageNo - 2;
     endPage = pageNo + 2;
   }
-  console.log("startPage:", startPage);
-  console.log("endPage:", endPage);
+  // console.log("startPage:", startPage);
+  // console.log("endPage:", endPage);
 
   // showing minimum pages before the loop executes
   if (pageNo > 3) {
