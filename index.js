@@ -76,7 +76,7 @@ const getProducts = async (pageNo = 1, limit = 10,searchValue) => {
 
       console.log("data:", data);
       displayProducts(data.products);
-      showIndividualButtons(totalPages);
+      handlePagination(totalPages);
     } else {
       throw new Error("400 Bad Request");
     }
@@ -216,7 +216,7 @@ const displayProducts = (products) => {
 };
 
 // function to show individual buttons for individual pages
-const showIndividualButtons = (totalPages) => {
+const handlePagination = (totalPages) => {
   console.log("totalPages:",totalPages);
   // this will clear the button container everytime the function is called
   individual_buttons.innerHTML = "";
