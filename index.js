@@ -88,29 +88,38 @@ getProducts(pageNo);
 
 // click event for previous button
 prev.addEventListener("click", () => {
+
   pageNo--;
   // console.log("pageNo:",pageNo);
-  if (pageNo >= 1) {
+
+  if(totalPages >= 1 && pageNo >= 1){
+    getProducts(pageNo,10,searchValue);
+  } else if(pageNo >= 1){
     getProducts(pageNo);
   } else {
     prev.disabled = "true";
   }
+
+    // if (pageNo >= 1) {
+    //   getProducts(pageNo);
+    // } else {
+    //   prev.disabled = "true";
+    // }
+
 });
 
 // click event for next button
 next.addEventListener("click", () => {
+
   pageNo++;
   // console.log("pageNo:",pageNo);
   // console.log("totalPages:",totalPages);
-  if(totalPages <= 3){
+  if(totalPages <= 3 && pageNo <= 3){
     getProducts(pageNo,10,searchValue);
-  } else {
-
-    if (pageNo <= totalPages) {
-      getProducts(pageNo);
-    } else {
-      next.disabled = "true";
-    }
+  } else if(pageNo <= totalPages){
+    getProducts(pageNo);
+  } else{
+    next.disabled = "true";
   }
 
 
