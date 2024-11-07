@@ -22,10 +22,13 @@ let temp = false;
 // timeout ID
 let timeOutId = null;
 
+let searchValue = null;
+
 // event for search input with debouncing
 search_input.addEventListener("input",()=>{
 
-  let searchValue = search_input.value;
+  // let searchValue = search_input.value;
+  searchValue = search_input.value;
     // console.log("searchValue:",searchValue);
 
   debounce(getProducts,2000,searchValue);
@@ -64,10 +67,6 @@ const getProducts = async (pageNo = 1, limit = 10,searchValue) => {
 
     const response = await fetch(`${url}`);
 
-    // if(search_input.value){
-    //   const responseSearch = await fetch(`${searchUrl}?limit=${limit}&skip=${skip}`)
-    // }
-
     if (response.ok) {
       const data = await response.json();
 
@@ -76,6 +75,7 @@ const getProducts = async (pageNo = 1, limit = 10,searchValue) => {
 
       console.log("data:", data);
       displayProducts(data.products);
+
       handlePagination(totalPages);
     } else {
       throw new Error("400 Bad Request");
@@ -102,11 +102,23 @@ next.addEventListener("click", () => {
   pageNo++;
   // console.log("pageNo:",pageNo);
   // console.log("totalPages:",totalPages);
-  if (pageNo <= totalPages) {
-    getProducts(pageNo);
+  if(totalPages <= 3){
+    getProducts(pageNo,10,searchValue);
   } else {
-    next.disabled = "true";
+
+    if (pageNo <= totalPages) {
+      getProducts(pageNo);
+    } else {
+      next.disabled = "true";
+    }
   }
+
+
+  // if (pageNo <= totalPages) {
+  //   getProducts(pageNo);
+  // } else {
+  //   next.disabled = "true";
+  // }
 });
 
 // function to display products in UI
@@ -215,7 +227,7 @@ const displayProducts = (products) => {
   });
 };
 
-// function to show individual buttons for individual pages
+// function to handle pagination
 const handlePagination = (totalPages) => {
   console.log("totalPages:",totalPages);
   // this will clear the button container everytime the function is called
@@ -225,17 +237,34 @@ const handlePagination = (totalPages) => {
   let startPage = null;
   let endPage = null;
 
-  // checking the pages if valid then it will show only 5 buttons and it won't exceed totalPages
-  if (pageNo < 3) {
+  if(totalPages <= 3){
     startPage = 1;
-    endPage = 5;
-  } else if (pageNo + 2 >= totalPages) {
-    startPage = totalPages - 4;
-    endPage = totalPages;
+    endPage = startPage + 2;
   } else {
-    startPage = pageNo - 2;
-    endPage = pageNo + 2;
+
+    if (pageNo < 3) {
+      startPage = 1;
+      endPage = 5;
+    } else if (pageNo + 2 >= totalPages) {
+      startPage = totalPages - 4;
+      endPage = totalPages;
+    } else {
+      startPage = pageNo - 2;
+      endPage = pageNo + 2;
+    }
   }
+
+  // checking the pages if valid then it will show only 5 buttons and it won't exceed totalPages
+  // if (pageNo < 3) {
+  //   startPage = 1;
+  //   endPage = 5;
+  // } else if (pageNo + 2 >= totalPages) {
+  //   startPage = totalPages - 4;
+  //   endPage = totalPages;
+  // } else {
+  //   startPage = pageNo - 2;
+  //   endPage = pageNo + 2;
+  // }
   // console.log("startPage:", startPage);
   // console.log("endPage:", endPage);
 
