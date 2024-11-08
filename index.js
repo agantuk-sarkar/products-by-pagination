@@ -317,8 +317,14 @@ const handlePagination = (totalPages) => {
       // re-assigning the pageNo with the selected button
       pageNo = i;
 
+      if(totalPages <= 3){
+        getProducts(pageNo,10,searchValue);
+      } else {
+        getProducts(pageNo);
+      }
+
       // calling the getPorducts function to send the selected pageNo
-      getProducts(pageNo);
+      // getProducts(pageNo);
     });
 
     individual_buttons.append(buttons);
