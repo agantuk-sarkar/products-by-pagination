@@ -288,6 +288,7 @@ const handlePagination = (totalPages) => {
     firstButton.classList.add("pageButtons");
 
     firstButton.addEventListener("click", () => {
+      
       pageNo = 1;
       getProducts(pageNo);
     });
