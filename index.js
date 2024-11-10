@@ -43,16 +43,20 @@ const debounce = (functionToCall,timer,searchValue)=>{
   }
 
   timeOutId = setTimeout(()=>{
-    console.log("pageNo:",pageNo);
-    console.log("searchValue:",searchValue);
+    // console.log("pageNo:",pageNo);
+    // console.log("searchValue:",searchValue);
+
+    pageNo = 1;
     
     functionToCall(pageNo,10,searchValue);
+    next.disabled = false;
+    prev.disabled = false;
   },timer);
 
 }
 
 // fetching the base url to get all products and using limit as a default parameter
-const getProducts = async (pageNo = 1, limit = 10,searchValue) => {
+const getProducts = async (pageNo, limit = 10,searchValue) => {
   try {
 
     let url = null;
@@ -76,7 +80,7 @@ const getProducts = async (pageNo = 1, limit = 10,searchValue) => {
       console.log("data:", data);
       displayProducts(data.products);
 
-      handlePagination(totalPages);
+      handlePagination(totalPages,data.total);
     } else {
       throw new Error("400 Bad Request");
     }
@@ -90,14 +94,16 @@ getProducts(pageNo);
 prev.addEventListener("click", () => {
 
   pageNo--;
-  // console.log("pageNo:",pageNo);
+  console.log("pageNo:",pageNo);
 
   if(totalPages >= 1 && pageNo >= 1){
     getProducts(pageNo,10,searchValue);
   } else if(pageNo >= 1){
     getProducts(pageNo);
   } else {
-    prev.disabled = "true";
+    prev.disabled = true;
+    next.disabled = false;
+    pageNo++;
   }
 
     // if (pageNo >= 1) {
@@ -112,15 +118,19 @@ prev.addEventListener("click", () => {
 next.addEventListener("click", () => {
 
   pageNo++;
-  // console.log("pageNo:",pageNo);
+  console.log("pageNo:",pageNo);
   // console.log("totalPages:",totalPages);
   if(totalPages <= 3 && pageNo <= 3){
     getProducts(pageNo,10,searchValue);
   } else if(pageNo <= totalPages){
     getProducts(pageNo);
   } else{
-    next.disabled = "true";
+    next.disabled = true
+    prev.disabled = false;
+    pageNo--;
+
   }
+
 
 
   // if (pageNo <= totalPages) {
@@ -237,8 +247,9 @@ const displayProducts = (products) => {
 };
 
 // function to handle pagination
-const handlePagination = (totalPages) => {
+const handlePagination = (totalPages,totalLimit) => {
   console.log("totalPages:",totalPages);
+
   // this will clear the button container everytime the function is called
   individual_buttons.innerHTML = "";
 
@@ -246,9 +257,9 @@ const handlePagination = (totalPages) => {
   let startPage = null;
   let endPage = null;
 
-  if(totalPages <= 3){
+  if(totalPages <= totalLimit){
     startPage = 1;
-    endPage = startPage + 2;
+    endPage = totalPages;
   } else {
 
     if (pageNo < 3) {
@@ -276,6 +287,7 @@ const handlePagination = (totalPages) => {
   // }
   // console.log("startPage:", startPage);
   // console.log("endPage:", endPage);
+  // console.log("pageNo:",pageNo);
 
   // showing minimum pages before the loop executes
   if (pageNo > 3) {
