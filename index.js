@@ -49,8 +49,11 @@ const debounce = (functionToCall,timer,searchValue)=>{
     pageNo = 1;
     
     functionToCall(pageNo,10,searchValue);
+
+    // this will reset the state of prev and next button
     next.disabled = false;
     prev.disabled = false;
+
   },timer);
 
 }
@@ -249,6 +252,8 @@ const displayProducts = (products) => {
 // function to handle pagination
 const handlePagination = (totalPages,totalLimit) => {
   console.log("totalPages:",totalPages);
+  console.log("totalLimit:",totalLimit);
+
 
   // this will clear the button container everytime the function is called
   individual_buttons.innerHTML = "";
@@ -257,7 +262,7 @@ const handlePagination = (totalPages,totalLimit) => {
   let startPage = null;
   let endPage = null;
 
-  if(totalPages <= totalLimit){
+  if(totalPages <= 3){
     startPage = 1;
     endPage = totalPages;
   } else {
