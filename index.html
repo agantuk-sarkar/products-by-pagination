@@ -22,8 +22,24 @@
                 </div>
             </div>
          </nav>
-        <!-- products container -->
-         <div class="products-container"></div>
+        <!-- products main container -->
+         <div class="products-container">
+            <!-- sort by categories -->
+             <div class="sort-by-categories-container">
+               <span>Sort By :</span>
+               <select id="sort-by-price">
+                  <option hidden>Sort By: Price/Rating</option>
+                  <option value="titleAtoZ">Title: A to Z</option>
+                  <option value="titleZtoA">Title: Z to A</option>
+                  <option value="priceLow">Price: Low to High</option>
+                  <option value="priceHigh">Price: High to Low</option>
+                  <option value="ratingLow">Rating: Low to High</option>
+                  <option value="ratingHigh">Rating: High to Low</option>
+               </select>
+             </div>
+             <!-- show products -->
+              <div class="show-products"></div>
+         </div>
          <!-- button container for previous and next -->
          <div class="button-container">
             <button class="prev">Prev</button>

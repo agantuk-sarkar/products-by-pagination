@@ -6,7 +6,8 @@ const baseUrl = "https://dummyjson.com/products";
 
 
 // getting the html elements into js
-const products_container = document.querySelector(".products-container");
+const show_products = document.querySelector(".show-products");
+const sorting_container = document.querySelector(".sort-by-categories-container");
 const individual_buttons = document.querySelector(".individual-buttons");
 const search_input = document.getElementById("search");
 const prev = document.querySelector(".prev");
@@ -145,7 +146,7 @@ next.addEventListener("click", () => {
 
 // function to display products in UI
 const displayProducts = (products) => {
-  products_container.innerHTML = "";
+  show_products.innerHTML = "";
 
   products?.forEach((product) => {
     const productMainDiv = document.createElement("div");
@@ -163,9 +164,11 @@ const displayProducts = (products) => {
 
     const price = document.createElement("h3");
     price.textContent = `Rs ${product.price}`;
+    price.classList.add("price");
 
     const title = document.createElement("p");
     title.textContent = product.title;
+    title.classList.add("title");
 
     const ratingContainer = document.createElement("div");
     ratingContainer.classList.add("rating-container");
@@ -241,11 +244,11 @@ const displayProducts = (products) => {
     });
 
     imageDiv.append(imageTag);
-    textDiv.append(price, title, ratingContainer, description, readMoreButton);
+    textDiv.append(title,price, ratingContainer, description, readMoreButton);
 
     productMainDiv.append(imageDiv, textDiv);
 
-    products_container.append(productMainDiv);
+    show_products.append(productMainDiv);
   });
 };
 
