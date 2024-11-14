@@ -4,10 +4,12 @@ const baseUrl = "https://dummyjson.com/products";
 // search url
 // https://dummyjson.com/products/search?q=phone&limit=10&skip=20
 
-
 // getting the html elements into js
 const show_products = document.querySelector(".show-products");
-const sorting_container = document.querySelector(".sort-by-categories-container");
+const sorting_container = document.querySelector(
+  ".sort-by-categories-container"
+);
+const sort_by = document.getElementById("sort-by");
 const individual_buttons = document.querySelector(".individual-buttons");
 const search_input = document.getElementById("search");
 const prev = document.querySelector(".prev");
@@ -26,49 +28,51 @@ let timeOutId = null;
 let searchValue = null;
 
 // event for search input with debouncing
-search_input.addEventListener("input",()=>{
-
+search_input.addEventListener("input", () => {
   // let searchValue = search_input.value;
   searchValue = search_input.value;
-    // console.log("searchValue:",searchValue);
+  // console.log("searchValue:",searchValue);
 
-  debounce(getProducts,2000,searchValue);
-
+  debounce(getProducts, 2000, searchValue);
 });
 
 // function for debouncing
-const debounce = (functionToCall,timer,searchValue)=>{
-
-  if(timeOutId){
+const debounce = (functionToCall, timer, searchValue) => {
+  if (timeOutId) {
     clearTimeout(timeOutId);
   }
 
-  timeOutId = setTimeout(()=>{
+  timeOutId = setTimeout(() => {
     // console.log("pageNo:",pageNo);
     // console.log("searchValue:",searchValue);
 
     pageNo = 1;
-    
-    functionToCall(pageNo,10,searchValue);
+
+    functionToCall(pageNo, 10, searchValue);
 
     // this will reset the state of prev and next button
     next.disabled = false;
     prev.disabled = false;
-
-  },timer);
-
-}
+  }, timer);
+};
 
 // fetching the base url to get all products and using limit as a default parameter
-const getProducts = async (pageNo, limit = 10,searchValue) => {
+const getProducts = async (
+  pageNo,
+  limit = 10,
+  searchValue = "",
+  sortByValue = "",
+  sortByOrder = ""
+) => {
   try {
-
     let url = null;
     const skip = (pageNo - 1) * limit;
 
-    if(searchValue){
-      // console.log("searchValue:",searchValue);
+    if (searchValue) {
+      console.log("searchValue:", searchValue);
       url = `${baseUrl}/search?q=${searchValue}&limit=${limit}&skip=${skip}`;
+    } else if (sortByValue) {
+      url = `${baseUrl}?limit=${limit}&skip=${skip}&sortBy=${sortByValue}&order=${sortByOrder}`;
     } else {
       url = `${baseUrl}?limit=${limit}&skip=${skip}`;
     }
@@ -84,7 +88,7 @@ const getProducts = async (pageNo, limit = 10,searchValue) => {
       console.log("data:", data);
       displayProducts(data.products);
 
-      handlePagination(totalPages,data.total);
+      handlePagination(totalPages, data.total);
     } else {
       throw new Error("400 Bad Request");
     }
@@ -96,46 +100,69 @@ getProducts(pageNo);
 
 // click event for previous button
 prev.addEventListener("click", () => {
-
   pageNo--;
-  console.log("pageNo:",pageNo);
+  console.log("pageNo:", pageNo);
 
-  if(totalPages >= 1 && pageNo >= 1){
-    getProducts(pageNo,10,searchValue);
-  } else if(pageNo >= 1){
-    getProducts(pageNo);
+  if (sort_by.value && !searchValue) {
+    if (sort_by.value === "titleAtoZ") {
+      getProducts(pageNo, 10, "", "title", "asc");
+    } else if (sort_by.value === "titleZtoA") {
+      getProducts(pageNo, 10, "", "title", "desc");
+    } else if (sort_by.value === "priceLow") {
+      getProducts(pageNo, 10, "", "price", "asc");
+    } else if (sort_by.value === "priceHigh") {
+      getProducts(pageNo, 10, "", "price", "desc");
+    } else if (sort_by.value === "ratingLow") {
+      getProducts(pageNo, 10, "", "rating", "asc");
+    } else if (sort_by.value === "ratingHigh") {
+      getProducts(pageNo, 10, "", "rating", "desc");
+    }
   } else {
-    prev.disabled = true;
-    next.disabled = false;
-    pageNo++;
+    if (totalPages >= 1 && pageNo >= 1) {
+      getProducts(pageNo, 10, searchValue);
+    } else if (pageNo >= 1) {
+      getProducts(pageNo);
+    } else {
+      prev.disabled = true;
+      next.disabled = false;
+      pageNo++;
+    }
   }
-
-    // if (pageNo >= 1) {
-    //   getProducts(pageNo);
-    // } else {
-    //   prev.disabled = "true";
-    // }
 
 });
 
 // click event for next button
 next.addEventListener("click", () => {
-
   pageNo++;
-  console.log("pageNo:",pageNo);
+  console.log("pageNo:", pageNo);
   // console.log("totalPages:",totalPages);
-  if(totalPages <= 3 && pageNo <= 3){
-    getProducts(pageNo,10,searchValue);
-  } else if(pageNo <= totalPages){
+  if (totalPages <= 3 && pageNo <= 3) {
+    getProducts(pageNo, 10, searchValue);
+  } else if (sort_by.value === "titleAtoZ") {
+    getProducts(pageNo, 10, "", "title", "asc");
+  } else if (sort_by.value === "titleZtoA") {
+    getProducts(pageNo, 10, "", "title", "desc");
+  } else if (sort_by.value === "priceLow") {
+    getProducts(pageNo, 10, "", "price", "asc");
+  } else if (sort_by.value === "priceHigh") {
+    getProducts(pageNo, 10, "", "price", "desc");
+  } else if (sort_by.value === "ratingLow") {
+    getProducts(pageNo, 10, "", "rating", "asc");
+  } else if (sort_by.value === "ratingHigh") {
+    getProducts(pageNo, 10, "", "rating", "desc");
+  } else if (pageNo <= totalPages) {
     getProducts(pageNo);
-  } else{
-    next.disabled = true
+  } else {
+    next.disabled = true;
     prev.disabled = false;
     pageNo--;
-
   }
 
-
+  // if(sort_by.value === "titleAtoZ"){
+  //   getProducts(pageNo,10,"","title","asc");
+  // } else if (sort_by.value === "titleZtoA"){
+  //   getProducts(pageNo,10,"","title","desc");
+  // }
 
   // if (pageNo <= totalPages) {
   //   getProducts(pageNo);
@@ -176,7 +203,7 @@ const displayProducts = (products) => {
 
     // taking variables for full star and decimal star rating
     let fullStar = Math.floor(product.rating);
-    let decimalStar = +((product.rating - fullStar).toString().slice(0,4));
+    let decimalStar = +(product.rating - fullStar).toString().slice(0, 4);
 
     // console.log(decimalStar);
     // console.log(typeof decimalStar);
@@ -187,19 +214,19 @@ const displayProducts = (products) => {
       stars.innerHTML = "&#9733";
       stars.classList.add("individual-star");
 
-      if(i <= fullStar){
+      if (i <= fullStar) {
         stars.classList.add("full-stars");
-      } else if(i === fullStar + 1 && decimalStar > 0){
+      } else if (i === fullStar + 1 && decimalStar > 0) {
         stars.classList.add("decimal-star");
 
         let decimalPercentage = decimalStar * 100;
 
-        stars.style.setProperty("--fill-percent",`${decimalPercentage}%`);
-      } 
-  
+        stars.style.setProperty("--fill-percent", `${decimalPercentage}%`);
+      }
+
       ratingContainer.append(stars);
     }
-  
+
     const description = document.createElement("p");
     description.textContent = product.description;
     description.classList.add("description");
@@ -244,7 +271,7 @@ const displayProducts = (products) => {
     });
 
     imageDiv.append(imageTag);
-    textDiv.append(title,price, ratingContainer, description, readMoreButton);
+    textDiv.append(title, price, ratingContainer, description, readMoreButton);
 
     productMainDiv.append(imageDiv, textDiv);
 
@@ -253,10 +280,9 @@ const displayProducts = (products) => {
 };
 
 // function to handle pagination
-const handlePagination = (totalPages,totalLimit) => {
-  console.log("totalPages:",totalPages);
-  console.log("totalLimit:",totalLimit);
-
+const handlePagination = (totalPages, totalLimit) => {
+  console.log("totalPages:", totalPages);
+  console.log("totalLimit:", totalLimit);
 
   // this will clear the button container everytime the function is called
   individual_buttons.innerHTML = "";
@@ -265,11 +291,10 @@ const handlePagination = (totalPages,totalLimit) => {
   let startPage = null;
   let endPage = null;
 
-  if(totalPages <= 3){
+  if (totalPages <= 3) {
     startPage = 1;
     endPage = totalPages;
   } else {
-
     if (pageNo < 3) {
       startPage = 1;
       endPage = 5;
@@ -308,7 +333,6 @@ const handlePagination = (totalPages,totalLimit) => {
     firstButton.classList.add("pageButtons");
 
     firstButton.addEventListener("click", () => {
-      
       pageNo = 1;
       getProducts(pageNo);
     });
@@ -337,8 +361,20 @@ const handlePagination = (totalPages,totalLimit) => {
       // re-assigning the pageNo with the selected button
       pageNo = i;
 
-      if(totalPages <= 3){
-        getProducts(pageNo,10,searchValue);
+      if (totalPages <= 3) {
+        getProducts(pageNo, 10, searchValue);
+      } else if (sort_by.value === "titleAtoZ") {
+        getProducts(pageNo, 10, "", "title", "asc");
+      } else if (sort_by.value === "titleZtoA") {
+        getProducts(pageNo, 10, "", "title", "desc");
+      } else if (sort_by.value === "priceLow") {
+        getProducts(pageNo, 10, "", "price", "asc");
+      } else if (sort_by.value === "priceHigh") {
+        getProducts(pageNo, 10, "", "price", "desc");
+      } else if (sort_by.value === "ratingLow") {
+        getProducts(pageNo, 10, "", "rating", "asc");
+      } else if (sort_by.value === "ratingHigh") {
+        getProducts(pageNo, 10, "", "rating", "desc");
       } else {
         getProducts(pageNo);
       }
@@ -378,3 +414,26 @@ const handlePagination = (totalPages,totalLimit) => {
     // individual_buttons.appendChild(extraButton);
   }
 };
+
+// adding change event on sorting
+sort_by.addEventListener("change", handleSorting);
+
+// function to handle sorting
+function handleSorting() {
+  // console.log(event.target.value);
+  console.log(sort_by.value);
+
+  if (sort_by.value === "titleAtoZ") {
+    getProducts(pageNo, 10, "", "title", "asc");
+  } else if (sort_by.value === "titleZtoA") {
+    getProducts(pageNo, 10, "", "title", "desc");
+  } else if (sort_by.value === "priceLow") {
+    getProducts(pageNo, 10, "", "price", "asc");
+  } else if (sort_by.value === "priceHigh") {
+    getProducts(pageNo, 10, "", "price", "desc");
+  } else if (sort_by.value === "ratingLow") {
+    getProducts(pageNo, 10, "", "rating", "asc");
+  } else if (sort_by.value === "ratingHigh") {
+    getProducts(pageNo, 10, "", "rating", "desc");
+  }
+}
