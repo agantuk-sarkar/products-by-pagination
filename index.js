@@ -1,8 +1,8 @@
 // base url for showing all products
 const baseUrl = "https://dummyjson.com/products";
 
-// search url
-// https://dummyjson.com/products/search?q=phone&limit=10&skip=20
+// category list url
+const categoryUrl = "https://dummyjson.com/products/category-list";
 
 // getting the html elements into js
 const show_products = document.querySelector(".show-products");
@@ -10,6 +10,7 @@ const sorting_container = document.querySelector(
   ".sort-by-categories-container"
 );
 const sort_by = document.getElementById("sort-by");
+const select_category = document.getElementById("categories-select-dropdown");
 const individual_buttons = document.querySelector(".individual-buttons");
 const search_input = document.getElementById("search");
 const prev = document.querySelector(".prev");
@@ -437,3 +438,34 @@ function handleSorting() {
     getProducts(pageNo, 10, "", "rating", "desc");
   }
 }
+
+// function to fetch the category list api
+const fetchCategories = async ()=>{
+  try{
+    const response = await fetch(categoryUrl);
+
+    if(response.ok){
+      const data = await response.json();
+      console.log("categoryData:",data);
+      getCategoryDropDown(data);
+    } else {
+      throw new Error("Invalid Url");
+    }
+  } catch(error){
+    console.log("error:",error);
+  }
+}
+
+// function to get the dropdown for category list
+const getCategoryDropDown = (categories)=>{
+  // console.log(categories);
+  categories.forEach((category)=>{
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+
+    select_category.append(option);
+  });
+}
+
+fetchCategories();
