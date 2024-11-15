@@ -63,7 +63,8 @@ const getProducts = async (
   limit = 10,
   searchValue = "",
   sortByValue = "",
-  sortByOrder = ""
+  sortByOrder = "",
+  categories = ""
 ) => {
   try {
     let url = null;
@@ -74,6 +75,8 @@ const getProducts = async (
       url = `${baseUrl}/search?q=${searchValue}&limit=${limit}&skip=${skip}`;
     } else if (sortByValue) {
       url = `${baseUrl}?limit=${limit}&skip=${skip}&sortBy=${sortByValue}&order=${sortByOrder}`;
+    } else if (categories != "") {
+      url = `${baseUrl}/category/${categories}?limit=${limit}&skip=${skip}`;
     } else {
       url = `${baseUrl}?limit=${limit}&skip=${skip}`;
     }
@@ -129,7 +132,6 @@ prev.addEventListener("click", () => {
       pageNo++;
     }
   }
-
 });
 
 // click event for next button
@@ -440,32 +442,37 @@ function handleSorting() {
 }
 
 // function to fetch the category list api
-const fetchCategories = async ()=>{
-  try{
+const fetchCategories = async () => {
+  try {
     const response = await fetch(categoryUrl);
 
-    if(response.ok){
+    if (response.ok) {
       const data = await response.json();
-      console.log("categoryData:",data);
+      console.log("categoryData:", data);
       getCategoryDropDown(data);
     } else {
       throw new Error("Invalid Url");
     }
-  } catch(error){
-    console.log("error:",error);
+  } catch (error) {
+    console.log("error:", error);
   }
-}
+};
 
 // function to get the dropdown for category list
-const getCategoryDropDown = (categories)=>{
+const getCategoryDropDown = (categories) => {
   // console.log(categories);
-  categories.forEach((category)=>{
+  categories.forEach((category) => {
     const option = document.createElement("option");
     option.value = category;
     option.textContent = category;
 
     select_category.append(option);
+
+    // adding change event for category
+    select_category.addEventListener("change", () => {
+      getProducts(pageNo, 10, "", "", "", category);
+    });
   });
-}
+};
 
 fetchCategories();
