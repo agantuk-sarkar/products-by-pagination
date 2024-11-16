@@ -107,7 +107,15 @@ prev.addEventListener("click", () => {
   pageNo--;
   console.log("pageNo:", pageNo);
 
-  if (sort_by.value && !searchValue) {
+  if (
+    sort_by.value &&
+    !searchValue &&
+    sort_by.value != "Sort By: Price/Rating"
+  ) {
+    // console.log("if success");
+    // console.log(sort_by.value);
+    // console.log(searchValue);
+
     if (sort_by.value === "titleAtoZ") {
       getProducts(pageNo, 10, "", "title", "asc");
     } else if (sort_by.value === "titleZtoA") {
@@ -122,14 +130,24 @@ prev.addEventListener("click", () => {
       getProducts(pageNo, 10, "", "rating", "desc");
     }
   } else {
-    if (totalPages >= 1 && pageNo >= 1) {
-      getProducts(pageNo, 10, searchValue);
-    } else if (pageNo >= 1) {
-      getProducts(pageNo);
+    console.log("else success");
+    if (select_category.value) {
+      getProducts(pageNo, 10, "", "", "", select_category.value);
+      // console.log("first");
+      if (pageNo === 1) {
+        prev.disabled = true;
+        next.disabled = false;
+      }
     } else {
-      prev.disabled = true;
-      next.disabled = false;
-      pageNo++;
+      if (totalPages >= 1 && pageNo >= 1) {
+        getProducts(pageNo, 10, searchValue);
+      } else if (pageNo >= 1) {
+        getProducts(pageNo);
+      } else {
+        prev.disabled = true;
+        next.disabled = false;
+        pageNo++;
+      }
     }
   }
 });
@@ -139,7 +157,15 @@ next.addEventListener("click", () => {
   pageNo++;
   console.log("pageNo:", pageNo);
   // console.log("totalPages:",totalPages);
-  if (totalPages <= 3 && pageNo <= 3) {
+
+  if (select_category.value) {
+    getProducts(pageNo, 10, "", "", "", select_category.value);
+
+    if (pageNo === totalPages) {
+      next.disabled = true;
+      prev.disabled = false;
+    }
+  } else if (totalPages <= 3 && pageNo <= 3) {
     getProducts(pageNo, 10, searchValue);
   } else if (sort_by.value === "titleAtoZ") {
     getProducts(pageNo, 10, "", "title", "asc");
@@ -460,19 +486,20 @@ const fetchCategories = async () => {
 
 // function to get the dropdown for category list
 const getCategoryDropDown = (categories) => {
-  // console.log(categories);
   categories.forEach((category) => {
     const option = document.createElement("option");
     option.value = category;
     option.textContent = category;
 
     select_category.append(option);
-
-    // adding change event for category
-    select_category.addEventListener("change", () => {
-      getProducts(pageNo, 10, "", "", "", category);
-    });
   });
 };
 
 fetchCategories();
+
+// adding change event for category
+select_category.addEventListener("change", () => {
+  pageNo = 1;
+  getProducts(pageNo, 10, "", "", "", select_category.value);
+  // console.log("first:",select_category.value);
+});
