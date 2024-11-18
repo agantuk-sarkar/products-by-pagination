@@ -30,9 +30,8 @@ let searchValue = null;
 
 // event for search input with debouncing
 search_input.addEventListener("input", () => {
-  // let searchValue = search_input.value;
+  
   searchValue = search_input.value;
-  // console.log("searchValue:",searchValue);
 
   debounce(getProducts, 2000, searchValue);
 });
@@ -44,8 +43,6 @@ const debounce = (functionToCall, timer, searchValue) => {
   }
 
   timeOutId = setTimeout(() => {
-    // console.log("pageNo:",pageNo);
-    // console.log("searchValue:",searchValue);
 
     pageNo = 1;
 
@@ -105,17 +102,13 @@ getProducts(pageNo);
 // click event for previous button
 prev.addEventListener("click", () => {
   pageNo--;
-  console.log("pageNo:", pageNo);
 
   if (
     sort_by.value &&
     !searchValue &&
     sort_by.value != "Sort By: Price/Rating"
   ) {
-    // console.log("if success");
-    // console.log(sort_by.value);
-    // console.log(searchValue);
-
+ 
     if (sort_by.value === "titleAtoZ") {
       getProducts(pageNo, 10, "", "title", "asc");
     } else if (sort_by.value === "titleZtoA") {
@@ -130,10 +123,8 @@ prev.addEventListener("click", () => {
       getProducts(pageNo, 10, "", "rating", "desc");
     }
   } else {
-    console.log("else success");
-    if (select_category.value) {
+    if (select_category.value && select_category.value != "All Categories") {
       getProducts(pageNo, 10, "", "", "", select_category.value);
-      // console.log("first");
       if (pageNo === 1) {
         prev.disabled = true;
         next.disabled = false;
@@ -155,11 +146,10 @@ prev.addEventListener("click", () => {
 // click event for next button
 next.addEventListener("click", () => {
   pageNo++;
-  console.log("pageNo:", pageNo);
-  // console.log("totalPages:",totalPages);
 
-  if (select_category.value) {
+  if (select_category.value && select_category.value != "All Categories") {
     getProducts(pageNo, 10, "", "", "", select_category.value);
+    console.log(select_category.value);
 
     if (pageNo === totalPages) {
       next.disabled = true;
@@ -187,17 +177,6 @@ next.addEventListener("click", () => {
     pageNo--;
   }
 
-  // if(sort_by.value === "titleAtoZ"){
-  //   getProducts(pageNo,10,"","title","asc");
-  // } else if (sort_by.value === "titleZtoA"){
-  //   getProducts(pageNo,10,"","title","desc");
-  // }
-
-  // if (pageNo <= totalPages) {
-  //   getProducts(pageNo);
-  // } else {
-  //   next.disabled = "true";
-  // }
 });
 
 // function to display products in UI
@@ -228,14 +207,10 @@ const displayProducts = (products) => {
 
     const ratingContainer = document.createElement("div");
     ratingContainer.classList.add("rating-container");
-    // ratingDiv.textContent = product.rating; 3.27
 
     // taking variables for full star and decimal star rating
     let fullStar = Math.floor(product.rating);
     let decimalStar = +(product.rating - fullStar).toString().slice(0, 4);
-
-    // console.log(decimalStar);
-    // console.log(typeof decimalStar);
 
     // using for loop to create 5 stars for rating
     for (let i = 1; i <= 5; i++) {
@@ -283,7 +258,6 @@ const displayProducts = (products) => {
           textDiv.append(readMoreButton);
         });
       }
-      // console.log(temp);
     }
 
     // click event for readMoreButton
@@ -335,21 +309,6 @@ const handlePagination = (totalPages, totalLimit) => {
       endPage = pageNo + 2;
     }
   }
-
-  // checking the pages if valid then it will show only 5 buttons and it won't exceed totalPages
-  // if (pageNo < 3) {
-  //   startPage = 1;
-  //   endPage = 5;
-  // } else if (pageNo + 2 >= totalPages) {
-  //   startPage = totalPages - 4;
-  //   endPage = totalPages;
-  // } else {
-  //   startPage = pageNo - 2;
-  //   endPage = pageNo + 2;
-  // }
-  // console.log("startPage:", startPage);
-  // console.log("endPage:", endPage);
-  // console.log("pageNo:",pageNo);
 
   // showing minimum pages before the loop executes
   if (pageNo > 3) {
@@ -407,9 +366,6 @@ const handlePagination = (totalPages, totalLimit) => {
       } else {
         getProducts(pageNo);
       }
-
-      // calling the getPorducts function to send the selected pageNo
-      // getProducts(pageNo);
     });
 
     individual_buttons.append(buttons);
@@ -420,7 +376,6 @@ const handlePagination = (totalPages, totalLimit) => {
     const spanTagForDots = document.createElement("span");
     spanTagForDots.textContent = "...";
     spanTagForDots.classList.add("dots");
-    // individual_buttons.appendChild(spanTagForDots);
 
     const extraButton = document.createElement("button");
     extraButton.textContent = totalPages;
@@ -440,7 +395,6 @@ const handlePagination = (totalPages, totalLimit) => {
       individual_buttons.removeChild(extraButton);
       individual_buttons.removeChild(spanTagForDots);
     }
-    // individual_buttons.appendChild(extraButton);
   }
 };
 
@@ -501,5 +455,4 @@ fetchCategories();
 select_category.addEventListener("change", () => {
   pageNo = 1;
   getProducts(pageNo, 10, "", "", "", select_category.value);
-  // console.log("first:",select_category.value);
 });
