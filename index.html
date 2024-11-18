@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+      <title>Pagination</title>
+</head>
+<body>
+    <!-- main container -->
+     <div class="main-container">
+        <!-- nav bar -->
+         <nav>
+            <div class="nav-bar">
+               <!-- home button -->
+                <a class="home-button" href="./index.html">Home</a>
+               <!-- search container -->
+                <div class="search-container">
+                  <!-- form to submit -->
+                   <form class="myForm">
+                     <input type="text" id="search" placeholder="Search the product"/>
+                     <!-- <input type="submit" id="search-button" value="Search"/> -->
+                   </form>
+                </div>
+            </div>
+         </nav>
+        <!-- products main container -->
+         <div class="products-container">
+            <!-- sort by categories -->
+             <div class="sort-by-categories-container">
+               <span>Sort By :</span>
+               <select id="sort-by">
+                  <option hidden>Sort By: Price/Rating</option>
+                  <option value="titleAtoZ">Title: A to Z</option>
+                  <option value="titleZtoA">Title: Z to A</option>
+                  <option value="priceLow">Price: Low to High</option>
+                  <option value="priceHigh">Price: High to Low</option>
+                  <option value="ratingLow">Rating: Low to High</option>
+                  <option value="ratingHigh">Rating: High to Low</option>
+               </select>
+               <!-- for categories drop down -->
+                <span>Categories :</span>
+                <select id="categories-select-dropdown">
+                  <option hidden>All Categories</option>
+                </select>
+             </div>
+             <!-- show products -->
+              <div class="show-products"></div>
+         </div>
+         <!-- button container for previous and next -->
+         <div class="button-container">
+            <button class="prev">Prev</button>
+            <!-- showing individual buttons -->
+             <div class="individual-buttons"></div>
+            <button class="next">Next</button>
+         </div>
+     </div>
+    
+</body>
+</html>
+<script src="./index.js"></script>
+ <!-- <script src="./index2.js"></script> -->
